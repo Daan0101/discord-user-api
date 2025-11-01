@@ -1,7 +1,8 @@
 package main
 
 import (
-	"log"
+	"fmt"
+	"os"
 	
 	"github.com/gofiber/fiber/v2"
 
@@ -13,7 +14,7 @@ func main() {
 	config.Load()
 
 	app := fiber.New(fiber.Config{
-		Prefork:       true,
+		Prefork:       false,
 		CaseSensitive: false,
 		StrictRouting: true,
 		Immutable:     true,
@@ -23,5 +24,8 @@ func main() {
 
 	routes.SetupAppRoutes(app)
 
-	log.Fatal(app.Listen(":3000"))
+	err := app.Listen(os.Getenv("PORT"))
+	if err != nil {
+		fmt.Println("Error starting web server:", err)
+	}
 }
